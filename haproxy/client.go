@@ -25,11 +25,16 @@ type HAProxyClient struct {
 func (h *HAProxyClient) connect() (err error) {
 	switch h.AfNet {
 	case AFNET_UNIX:
-		h.conn, err = net.DialTimeout(h.AfNet, h.Address, h.Timeout)
-	case AFNET_TCP:
-		err = fmt.Errorf("Not implemented, yet!")
+	case AFNET_TCP4:
+		err = isValidIPv4Addr(h.Address)
+	case AFNET_TCP6:
+		err = isValidIPv6Addr(h.Address)
 	default:
-		err = fmt.Errorf("Supported network types are '%s', and '%s'\n", AFNET_UNIX, AFNET_TCP)
+		err = fmt.Errorf("Supported network types are '%s', '%s', and '%s'\n",
+			AFNET_UNIX, AFNET_TCP4, AFNET_TCP6)
+	}
+	if err == nil {
+		h.conn, err = net.DialTimeout(h.AfNet, h.Address, h.Timeout)
 	}
 	return err
 }
