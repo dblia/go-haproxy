@@ -14,3 +14,10 @@
 
 # distribution specific extensions/prefixes/build dependencies
 vendor/
+
+# NOTE: The client's tests are maintained under a dedicated 'tests/' directory.
+# Prior to run them, we symlink each testing file under 'haproxy/' directoy, and
+# finally unlink them all, as soon as the test completes (see `@Makefile`). This
+# is done since I dislike maintaining test files along with the main code, and
+# there's no other way of testing private methods from an outside directory.
+haproxy/*_test.go
