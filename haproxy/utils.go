@@ -35,7 +35,9 @@ func isValidIPv4Addr(ipAddr string) (err error) {
 	if len(data) != 2 {
 		err = fmt.Errorf("Invalid address format: '%s'", ipAddr)
 	} else if e := net.ParseIP(data[0]); e == nil {
-		err = fmt.Errorf("Invalid IPv4 address: '%s'", data[0])
+		if data[0] != "localhost" {
+			err = fmt.Errorf("Invalid IPv4 address: '%s'", data[0])
+		}
 	} else if _, e := strconv.Atoi(data[1]); e != nil {
 		err = fmt.Errorf("Invalid port: '%s'", data[1])
 	}
